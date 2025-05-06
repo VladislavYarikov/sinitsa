@@ -41,9 +41,11 @@ const bot = new Telegraf(API_KEY_BOT);
 //         });
 //     });
 // });
-bot.on('text', (ctx) => {
-    ctx.reply('Hi from Vercel!');
-  });
+bot.start((ctx) => ctx.reply('Welcome'));
+bot.help((ctx) => ctx.reply('Send me a sticker'));
+bot.on('sticker', (ctx) => ctx.reply('👍'));
+bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+bot.launch();
   
   // Export Vercel serverless function
   module.exports = async (req, res) => {
