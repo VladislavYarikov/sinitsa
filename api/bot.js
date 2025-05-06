@@ -26,6 +26,7 @@ const bot = new TelegramBot(API_KEY_BOT, { polling: false });
 // bot.on("polling_error", err => console.log(err.data.error.message));
 
 bot.on("text", (msg) => {
+    console.log("help")
     const chatId = msg.chat.id;
     
     bot.sendMessage(chatId, 'Подожди...')
@@ -43,8 +44,7 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       // Process the update from the request body
-      let test = bot.processUpdate(req.body);
-      console.log(test)// <-- Fixed to use processUpdate
+      bot.processUpdate(req.body);// <-- Fixed to use processUpdate
       res.status(200).send('ok');
     } catch (error) {
       res.status(500).send('Error processing update');
