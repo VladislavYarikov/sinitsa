@@ -42,9 +42,6 @@ const bot = new Telegraf(API_KEY_BOT);
 //     });
 // });
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-bot.on('text', (ctx) => {
-    ctx.reply('Hi from Vercel!');
-  });
 bot.launch();
 
 export default async function handler(req, res) {
