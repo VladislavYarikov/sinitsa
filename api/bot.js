@@ -44,19 +44,13 @@ const bot = new Telegraf(API_KEY_BOT);
 bot.on('text', (ctx) => {
     ctx.reply('Hi from Vercel!');
   });
-
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    try {
-      // Process the update from the request body
+  
+  // Export Vercel serverless function
+  module.exports = async (req, res) => {
+    if (req.method === 'POST') {
       await bot.handleUpdate(req.body, res);
-      res.status(200).send('ok');
-    } catch (error) {
-      res.status(500).send('Error processing update');
-      console.error('Error:', error);
+    } else {
+      res.status(200).send('Telegram bot is running!');
     }
-  } else {
-    res.status(200).send('Bot is running');
-  }
-}
+  };
   
