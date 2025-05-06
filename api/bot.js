@@ -44,6 +44,7 @@ export default async function handler(req, res) {
     const chatId = req.body.message.chat.id;
     console.log(chatId)
     let test1 = bot.sendMessage(chatId, 'pong')// <-- Fixed to use processUpdate
+    test1.then(a => console.log(a))
     console.log("testing: ", test1)
 
   if (req.method === 'POST') {
