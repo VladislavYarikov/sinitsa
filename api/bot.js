@@ -43,8 +43,8 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       // Process the update from the request body
-      console.log(req.body);
-      bot.processUpdate(req.body); // <-- Fixed to use processUpdate
+      let test = bot.processUpdate(req.body);
+      console.log(test)// <-- Fixed to use processUpdate
       res.status(200).send('ok');
     } catch (error) {
       res.status(500).send('Error processing update');
