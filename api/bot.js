@@ -41,12 +41,11 @@ const bot = new Telegraf(API_KEY_BOT);
 //         });
 //     });
 // });
-bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-bot.launch();
+bot.on('text', (ctx) => {
+    ctx.reply('Hi from Vercel!');
+  });
 
 export default async function handler(req, res) {
-    console.log(bot)
-
   if (req.method === 'POST') {
     try {
       // Process the update from the request body
