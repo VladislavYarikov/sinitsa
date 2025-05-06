@@ -27,7 +27,7 @@ const bot = new TelegramBot(API_KEY_BOT, { polling: false });
 
 bot.on("text", (msg) => {
     const chatId = msg.chat.id;
-    console.log(msg)
+    //console.log(msg)
     
     bot.sendMessage(chatId, 'Подожди...')
        .then(sentMessage => { console.log(sentMessage); generateAnswer(msg.text)
