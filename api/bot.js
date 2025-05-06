@@ -41,18 +41,26 @@ const bot = new Telegraf(API_KEY_BOT);
 //         });
 //     });
 // });
-bot.start((ctx) => ctx.reply('Welcome'));
-bot.help((ctx) => ctx.reply('Send me a sticker'));
-bot.on('sticker', (ctx) => ctx.reply('👍'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+bot.on('text', (ctx) => {
+    ctx.reply('Hi from Vercel!');
+  });
 bot.launch();
-  
-  // Export Vercel serverless function
-  module.exports = async (req, res) => {
-    if (req.method === 'POST') {
-      await bot.handleUpdate(req.body, res);
-    } else {
-      res.status(200).send('Telegram bot is running!');
+
+export default async function handler(req, res) {
+    console.log(bot)
+
+  if (req.method === 'POST') {
+    try {
+      // Process the update from the request body
+      await bot.handleUpdate(req.body);
+      res.status(200).send('ok');
+    } catch (error) {
+      res.status(500).send('Error processing update');
+      console.error('Error:', error);
     }
-  };
+  } else {
+    res.status(200).send('Bot is running');
+  }
+}
   
