@@ -26,11 +26,11 @@ const bot = new TelegramBot(API_KEY_BOT, { polling: false });
 // bot.on("polling_error", err => console.log(err.data.error.message));
 
 bot.on("text", (msg) => {
-    console.log("help")
     const chatId = msg.chat.id;
+    console.log(msg)
     
     bot.sendMessage(chatId, 'Подожди...')
-       .then(sentMessage => { generateAnswer(msg.text)
+       .then(sentMessage => { console.log(sentMessage); generateAnswer(msg.text)
        .then(response => {
                 bot.editMessageText(response, {
                 chat_id: chatId,
