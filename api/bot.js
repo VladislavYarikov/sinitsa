@@ -23,7 +23,7 @@ const generateAnswer = async (message) => {
 const client = new InferenceClient(apiKey); //client for AI messages
 const bot = new TelegramBot(API_KEY_BOT, { polling: false });
 
-bot.on("polling_error", err => console.log(err.data.error.message));
+// bot.on("polling_error", err => console.log(err.data.error.message));
 
 bot.on("text", (msg) => {
     const chatId = msg.chat.id;
@@ -42,9 +42,9 @@ bot.on("text", (msg) => {
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-        console.log("blyat")
       // Process the update from the request body
-      await bot.processUpdate(req.body); // <-- Fixed to use processUpdate
+      console.log(req.body);
+      bot.processUpdate(req.body); // <-- Fixed to use processUpdate
       res.status(200).send('ok');
     } catch (error) {
       res.status(500).send('Error processing update');
