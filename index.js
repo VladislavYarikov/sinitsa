@@ -20,15 +20,8 @@ const generateAnswer = async (message) => {
     return chatCompletion.choices[0].message.content
 }
 
-// console.log(chatCompletion.choices[0].message);
-
 const client = new InferenceClient(apiKey); //client for AI messages
-const bot = new TelegramBot(API_KEY_BOT, {  //bot for Telegram
-    polling: {
-      interval: 300,
-      autoStart: true
-    }  
-});
+const bot = new TelegramBot(API_KEY_BOT, { polling: false });
 
 bot.on("polling_error", err => console.log(err.data.error.message));
 
@@ -45,3 +38,14 @@ bot.on("text", (msg) => {
         });
     });
 });
+
+export default async function handler(req, res) {
+    if (req.method === 'POST') {
+      await bot.handleUpdate(req.body);
+      res.status(200).send('ok');
+    } else {
+      res.status(200).send('Bot is running');
+    }
+  }
+  
+  

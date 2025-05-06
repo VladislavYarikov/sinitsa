@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The telegram bot that helps people with a menu ",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "bun --watch index.js"
   },
