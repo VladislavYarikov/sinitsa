@@ -43,7 +43,8 @@ bot.on("text", (msg) => {
 export default async function handler(req, res) {
     const chatId = req.body.message.chat.id;
     console.log(chatId)
-    bot.sendMessage(chatId, 'pong').then(a => console.log(a))// <-- Fixed to use processUpdate
+    let test1 = bot.sendMessage(chatId, 'pong')// <-- Fixed to use processUpdate
+    console.log("testing: ", test1)
 
   if (req.method === 'POST') {
     try {
