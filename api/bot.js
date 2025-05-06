@@ -58,7 +58,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 
 // Create a bot instance using your Telegram token
-const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: false });
+const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: false });
 
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
