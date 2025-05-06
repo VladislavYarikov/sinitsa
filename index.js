@@ -1,8 +1,9 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { InferenceClient } from "@huggingface/inference";
+import 'dotenv/config';
 
-const apiKey = ''; // Hugging Face API-ключ
-const API_KEY_BOT = ''; // Telegram bot API key
+const apiKey = process.env.HUGGINGFACE_TOKEN; // Hugging Face API-ключ
+const API_KEY_BOT = process.env.TELEGRAM_TOKEN; // Telegram bot API key
 
 const generateAnswer = async (message) => {
     const chatCompletion = await client.chatCompletion({
