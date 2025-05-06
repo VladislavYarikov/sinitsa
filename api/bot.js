@@ -40,17 +40,18 @@ bot.on("text", (msg) => {
 });
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
-      try {
-        // Process the update from the request body
-        await bot.processUpdate(req.body); // <-- Fixed to use processUpdate
-        res.status(200).send('ok');
-      } catch (error) {
-        res.status(500).send('Error processing update');
-        console.error('Error:', error);
-      }
-    } else {
-      res.status(200).send('Bot is running');
+  if (req.method === 'POST') {
+    try {
+        console.log("blyat")
+      // Process the update from the request body
+      await bot.processUpdate(req.body); // <-- Fixed to use processUpdate
+      res.status(200).send('ok');
+    } catch (error) {
+      res.status(500).send('Error processing update');
+      console.error('Error:', error);
     }
+  } else {
+    res.status(200).send('Bot is running');
   }
+}
   
