@@ -47,20 +47,21 @@ bot.on("text", (msg) => {
 //   });
 // bot.launch();
 
-// export default async function handler(req, res) {
-//     console.log(bot)
+export default async function handler(req, res) {
+    console.log(bot)
 
-//   if (req.method === 'POST') {
-//     try {
-//       // Process the update from the request body
-//       await bot.handleUpdate(req.body);
-//       res.status(200).send('ok');
-//     } catch (error) {
-//       res.status(500).send('Error processing update');
-//       console.error('Error:', error);
-//     }
-//   } else {
-//     res.status(200).send('Bot is running');
-//   }
-// }
+    if (req.method === 'POST') {
+        try {
+          // Process the update from the request body
+          console.log(req.body);
+          bot.processUpdate(req.body); // <-- Fixed to use processUpdate
+          res.status(200).send('ok');
+        } catch (error) {
+          res.status(500).send('Error processing update');
+          console.error('Error:', error);
+        }
+      } else {
+        res.status(200).send('Bot is running');
+      }
+}
   
