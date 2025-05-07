@@ -63,9 +63,9 @@ const bot = new Telegraf(API_KEY_BOT);
 //   });
 
 // Echo any text message
-bot.message((ctx) => {
-    ctx.reply(`You said: ${ctx.message.text}`);
-  });
+    bot.on('text', (ctx) => {
+        ctx.reply(`You said: ${ctx.message.text}`);
+    });
   
   // Start the bot using long polling
   bot.launch().then(() => {
