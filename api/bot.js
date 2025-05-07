@@ -22,45 +22,45 @@ const generateAnswer = async (message) => {
 }
 
 const client = new InferenceClient(apiKey); //client for AI messages
-//const bot = new TelegramBot(API_KEY_BOT, { polling: false });
-const bot = new Telegraf(API_KEY_BOT);
+const bot = new TelegramBot(API_KEY_BOT, { polling: false });
+// const bot = new Telegraf(API_KEY_BOT);
 
-// bot.on("polling_error", err => console.log(err.data.error.message));
+bot.on("polling_error", err => console.log(err.data.error.message));
 
-// bot.on("text", (msg) => {
-//     const chatId = msg.chat.id;
-//     //console.log(msg)
+bot.on("text", (msg) => {
+    const chatId = msg.chat.id;
+    console.log(msg)
     
-//     bot.sendMessage(chatId, 'Подожди...')
-//        .then(sentMessage => { console.log(sentMessage); generateAnswer(msg.text)
-//        .then(response => {
-//                 bot.editMessageText(response, {
-//                 chat_id: chatId,
-//                 message_id: sentMessage.message_id
-//             });
-//         });
-//     });
-// });
-bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-bot.on('text', (ctx) => {
-    ctx.reply('Hi from Vercel!');
-  });
-bot.launch();
+    bot.sendMessage(chatId, 'Подожди...')
+       .then(sentMessage => { console.log(sentMessage); generateAnswer(msg.text)
+       .then(response => {
+                bot.editMessageText(response, {
+                chat_id: chatId,
+                message_id: sentMessage.message_id
+            });
+        });
+    });
+});
+// bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+// bot.on('text', (ctx) => {
+//     ctx.reply('Hi from Vercel!');
+//   });
+// bot.launch();
 
-export default async function handler(req, res) {
-    console.log(bot)
+// export default async function handler(req, res) {
+//     console.log(bot)
 
-  if (req.method === 'POST') {
-    try {
-      // Process the update from the request body
-      await bot.handleUpdate(req.body);
-      res.status(200).send('ok');
-    } catch (error) {
-      res.status(500).send('Error processing update');
-      console.error('Error:', error);
-    }
-  } else {
-    res.status(200).send('Bot is running');
-  }
-}
+//   if (req.method === 'POST') {
+//     try {
+//       // Process the update from the request body
+//       await bot.handleUpdate(req.body);
+//       res.status(200).send('ok');
+//     } catch (error) {
+//       res.status(500).send('Error processing update');
+//       console.error('Error:', error);
+//     }
+//   } else {
+//     res.status(200).send('Bot is running');
+//   }
+// }
   
