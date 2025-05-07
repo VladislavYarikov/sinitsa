@@ -63,7 +63,7 @@ const bot = new Telegraf(API_KEY_BOT);
 //   });
 
 // Echo any text message
-    bot.on('text', (ctx) => {
+    bot.on('message:text', (ctx) => {
         ctx.reply(`You said: ${ctx.message.text}`);
     });
   
