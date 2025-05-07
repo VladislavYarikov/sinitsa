@@ -39,39 +39,28 @@ const bot = new Telegraf(API_KEY_BOT);
 //     });
 // });
 
-// bot.on('message:text', async (ctx) => {
-//     const chatId = ctx.chat.id;
-//     const inputText = ctx.message.text;
+bot.on('message', async (ctx) => {
+    const chatId = ctx.chat.id;
+    const inputText = ctx.message.text;
   
-//     // Send placeholder message
-//     const sentMessage = await ctx.reply('Подожди...');
+    // Send placeholder message
+    const sentMessage = await ctx.reply('Подожди...');
   
-//     try {
-//       const response = await generateAnswer(inputText);
+    try {
+      const response = await generateAnswer(inputText);
   
-//       // Edit the original message with the response
-//       await ctx.telegram.editMessageText(
-//         chatId,
-//         sentMessage.message_id,
-//         null,
-//         response
-//       );
-//     } catch (error) {
-//       console.error('Error generating answer:', error);
-//       await ctx.reply('Произошла ошибка при генерации ответа.');
-//     }
-//   });
-
-// Echo any text message
-    bot.on('text', (ctx) => {
-        ctx.reply(`old: ${ctx.message.text}`);
-    });
-    
-    // OR using bot.message (if you're on v4.x+)
-    bot.message((ctx) => {
-        ctx.reply(`new: ${ctx.message.text}`);
-    });
-  
+      // Edit the original message with the response
+      await ctx.telegram.editMessageText(
+        chatId,
+        sentMessage.message_id,
+        null,
+        response
+      );
+    } catch (error) {
+      console.error('Error generating answer:', error);
+      await ctx.reply('Произошла ошибка при генерации ответа.');
+    }
+  });  
   
   // Start the bot using long polling
   bot.launch().then(() => {
