@@ -62,16 +62,16 @@ const bot = new Telegraf(API_KEY_BOT);
 //     }
 //   });
 
-bot.on('message:text', async (ctx) => {
-    console.log(ctx);
-    ctx.reply('Подожди...');
-});
+// Echo any text message
+bot.message((ctx) => {
+    ctx.reply(`You said: ${ctx.message.text}`);
+  });
   
-// Start the bot using long polling
-bot.launch().then(() => {
+  // Start the bot using long polling
+  bot.launch().then(() => {
     console.log('🤖 Bot is up and running!');
-});
-
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));  
+  });
+  
+  // Enable graceful stop
+  process.once('SIGINT', () => bot.stop('SIGINT'));
+  process.once('SIGTERM', () => bot.stop('SIGTERM'));
