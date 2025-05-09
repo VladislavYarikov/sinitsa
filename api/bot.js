@@ -1,4 +1,5 @@
 import { Telegraf } from 'telegraf';
+import { Markup } from 'telegraf/markup';
 import { InferenceClient } from "@huggingface/inference";
 import { connectDB } from './db.js';
 import { User } from '../models/User.js';
@@ -30,6 +31,14 @@ const client = new InferenceClient(apiKey); //client for AI messages
 const bot = new Telegraf(API_KEY_BOT);
 
 await connectDB();
+
+bot.start((ctx) => {
+  console.log('Start command received');
+  ctx.reply('Welcome! Choose an option:', Markup.inlineKeyboard([
+    [Markup.button.callback('Создать аккаунт', 'createAcc')],
+    [Markup.button.callback('Option 2', 'option2')]
+  ]));
+});
 
 bot.on('message', async (ctx) => {
     const userId = ctx.from.id;
@@ -64,13 +73,6 @@ bot.on('message', async (ctx) => {
         break;
     }
   });  
-  
-  bot.start((ctx) => {
-    ctx.reply('Welcome! Choose an option:', Markup.inlineKeyboard([
-      [Markup.button.callback('Создать аккаунт', 'createAcc')],
-      [Markup.button.callback('Option 2', 'option2')]
-    ]));
-  });
   
   bot.action('createAcc', ctx => {
     userStates.set(ctx.from.id, 'awaitingPhone');
