@@ -1,6 +1,16 @@
 import { Telegraf } from 'telegraf';
 import { InferenceClient } from "@huggingface/inference";
+import { connectDB } from './db.js';
+import { User } from '../models/User.js';
 import 'dotenv/config';
+
+await connectDB();
+
+const user = await User.create({ name: 'Alice', email: 'alice@example.com' });
+console.log('New user:', user);
+
+const allUsers = await User.find();
+console.log('All users:', allUsers);
 
 const apiKey = process.env.HUGGINGFACE_TOKEN; // Hugging Face API-ключ
 const API_KEY_BOT = process.env.TELEGRAM_TOKEN; // Telegram bot API key
@@ -22,22 +32,6 @@ const generateAnswer = async (message) => {
 
 const client = new InferenceClient(apiKey); //client for AI messages
 const bot = new Telegraf(API_KEY_BOT);
-
-
-// bot.on("text", (msg) => {
-//     const chatId = msg.chat.id;
-//     //console.log(msg)
-    
-//     bot.sendMessage(chatId, 'Подожди...')
-//        .then(sentMessage => { console.log(sentMessage); generateAnswer(msg.text)
-//        .then(response => {
-//                 bot.editMessageText(response, {
-//                 chat_id: chatId,
-//                 message_id: sentMessage.message_id
-//             });
-//         });
-//     });
-// });
 
 bot.on('message', async (ctx) => {
     const chatId = ctx.chat.id;
