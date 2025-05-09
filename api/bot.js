@@ -43,6 +43,7 @@ bot.start((ctx) => {
 
 bot.on('message', async (ctx) => {
     const userId = ctx.from.id;
+    const userName = ctx.from.first_name;
     const chatId = ctx.chat.id;
 
     const inputText = ctx.message.text;
@@ -55,6 +56,12 @@ bot.on('message', async (ctx) => {
         let sendMessage = undefined;
 
         if (phoneRegexp.test(inputText) && !userData.has("number")) {
+          const user = await User.findOne({ phone: inputText });
+          if (user) {
+            userStates.delete(userId); 
+            await ctx.reply(`Аккаунт с таким номером уже был создан`);
+          }
+
           userData.set("number", inputText);
 
           sendMessage = await ctx.reply(`Спасибо! Мы записали ваш номер: ${userData.get("number")}`);
@@ -75,7 +82,7 @@ bot.on('message', async (ctx) => {
           sendMessage = await ctx.reply(`Спасибо! Мы записали ваш пароль: ${userData.get("password")}`);
 
           setTimeout(async () => {
-            await User.create({ phone: userData.get("number"), password: userData.get("password") });
+            await User.create({ phone: userData.get("number"), password: userData.get("password"), name: userName});
             await ctx.telegram.editMessageText(
               chatId,
               sendMessage.message_id,
