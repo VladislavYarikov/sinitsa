@@ -4,16 +4,8 @@ import { connectDB } from './db.js';
 import { User } from '../models/User.js';
 import 'dotenv/config';
 
-
-console.log("hello")
 await connectDB();
-console.log("good")
-
-const user = await User.create({ name: 'Alice', email: 'alice@example.com' });
-console.log('New user:', user);
-
-const allUsers = await User.find();
-console.log('All users:', allUsers);
+await User.create({ name: 'Alice', email: 'alice@example.com' });
 
 const apiKey = process.env.HUGGINGFACE_TOKEN; // Hugging Face API-ключ
 const API_KEY_BOT = process.env.TELEGRAM_TOKEN; // Telegram bot API key
