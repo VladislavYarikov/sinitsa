@@ -51,7 +51,6 @@ bot.on('message', async (ctx) => {
       case 'awaitingPhone':
         const phone = ctx.message.text;
 
-        // тут можешь добавить в БД или проверить формат и т.п.
         await ctx.reply(`Спасибо! Мы записали ваш номер: ${phone}`);
 
         userStates.delete(userId); // очистить состояние
@@ -80,6 +79,9 @@ bot.on('message', async (ctx) => {
   });  
   
   bot.action('createAcc', ctx => {
+    const state = userStates.get(ctx.from.id);
+    if (state == 'awaitingPhone') return;
+
     userStates.set(ctx.from.id, 'awaitingPhone');
     ctx.reply('Чтобы создать аккаунт пришлите: свой номер телефона');
   });
