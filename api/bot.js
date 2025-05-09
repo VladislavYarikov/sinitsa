@@ -66,7 +66,7 @@ bot.on('message', async (ctx) => {
               null,
               'Создайте пароль, который содержит:\n 1. Только латинские буквы, \n 2. Минимум 1 цифру \n 3. Минимум одну заглавную букву'
             );
-          }, 500);
+          }, 1000);
         }
 
         if (passwordRegexp.test(inputText) && userData.has("number")) {
@@ -75,14 +75,16 @@ bot.on('message', async (ctx) => {
           sendMessage = await ctx.reply(`Спасибо! Мы записали ваш пароль: ${userData.get("password")}`);
 
           setTimeout(async () => {
+            await User.create({ phone: userData.get("number"), password: userData.get("password") });
             await ctx.telegram.editMessageText(
               chatId,
               sendMessage.message_id,
               null,
-              `Ваш аккаунт:\n Номер - ${userData.get("number")}, \n 2. Пароль - ${userData.get("password")}`
+              `Ваш аккаунт:\n 1. Номер - ${userData.get("number")}, \n 2. Пароль - ${userData.get("password")}`
             );
+
             userStates.delete(userId); // очистить состояние
-          }, 500);
+          }, 1000);
         }
 
         break;
