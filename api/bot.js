@@ -60,6 +60,7 @@ bot.on('message', async (ctx) => {
           if (user) {
             userStates.delete(userId); 
             await ctx.reply(`Аккаунт с таким номером уже был создан`);
+            return;
           }
 
           userData.set("number", inputText);
