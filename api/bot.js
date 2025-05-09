@@ -11,6 +11,7 @@ const apiKey = process.env.HUGGINGFACE_TOKEN; // Hugging Face API-ключ
 const API_KEY_BOT = process.env.TELEGRAM_TOKEN; // Telegram bot API key\
 
 const userStates = new Map();
+const userData = new Map();
 
 const generateAnswer = async (message) => {
     const chatCompletion = await client.chatCompletion({
@@ -34,9 +35,9 @@ await connectDB();
 
 bot.start((ctx) => {
   console.log('Start command received');
-  ctx.reply('Welcome! Choose an option:', Markup.inlineKeyboard([
+  ctx.reply('Меню опций:', Markup.inlineKeyboard([
     [Markup.button.callback('Создать аккаунт', 'createAcc')],
-    [Markup.button.callback('Option 2', 'option2')]
+    [Markup.button.callback('Войти в аккаунт', 'loginAcc')]
   ]));
 });
 
@@ -48,12 +49,42 @@ bot.on('message', async (ctx) => {
     const state = userStates.get(userId);
 
     switch (state) {
-      case 'awaitingPhone':
-        const phone = ctx.message.text;
+      case 'registrationProcess':
+        const phoneRegexp = /^89\d{9}$/;
+        const passwordRegexp = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/;
+        let sendMessage = undefined;
 
-        await ctx.reply(`Спасибо! Мы записали ваш номер: ${phone}`);
+        if (phoneRegexp.test(inputText) && !userData.has("number")) {
+          userData.set("number", inputText);
 
-        userStates.delete(userId); // очистить состояние
+          sendMessage = await ctx.reply(`Спасибо! Мы записали ваш номер: ${userData.get("number")}`);
+
+          setTimeout(async () => {
+            await ctx.telegram.editMessageText(
+              chatId,
+              sendMessage.message_id,
+              null,
+              'Создайте пароль, который содержит:\n 1. Только латинские буквы, \n 2. Минимум 1 цифру \n 3. Минимум одну заглавную букву'
+            );
+          }, 500);
+        }
+
+        if (passwordRegexp.test(inputText) && userData.has("number")) {
+          userData.set("password", inputText);
+
+          sendMessage = await ctx.reply(`Спасибо! Мы записали ваш пароль: ${userData.get("password")}`);
+
+          setTimeout(async () => {
+            await ctx.telegram.editMessageText(
+              chatId,
+              sendMessage.message_id,
+              null,
+              `Ваш аккаунт:\n Номер - ${userData.get("number")}, \n 2. Пароль - ${userData.get("password")}`
+            );
+            userStates.delete(userId); // очистить состояние
+          }, 500);
+        }
+
         break;
     
       default:
@@ -83,9 +114,10 @@ bot.on('message', async (ctx) => {
     if (state == 'awaitingPhone') return;
 
     userStates.set(ctx.from.id, 'awaitingPhone');
-    ctx.reply('Чтобы создать аккаунт пришлите: свой номер телефона');
+    ctx.reply('Создание аккаунта...');
+    ctx.reply('Пришлите свой номер телефона в формате: 89XXXXXXXXX');
   });
-  bot.action('option2', ctx => ctx.reply('You chose option 2'));
+  bot.action('loginAcc', ctx => ctx.reply('You chose option 2'));
 
   // Start the bot using long polling
   bot.launch().then(() => {
