@@ -111,9 +111,9 @@ bot.on('message', async (ctx) => {
   
   bot.action('createAcc', ctx => {
     const state = userStates.get(ctx.from.id);
-    if (state == 'awaitingPhone') return;
+    if (state == 'registrationProcess') return;
 
-    userStates.set(ctx.from.id, 'awaitingPhone');
+    userStates.set(ctx.from.id, 'registrationProcess');
     ctx.reply('Создание аккаунта...');
     ctx.reply('Пришлите свой номер телефона в формате: 89XXXXXXXXX');
   });
