@@ -49,7 +49,12 @@ bot.on('message', async (ctx) => {
 
     switch (state) {
       case 'awaitingPhone':
-        const sendNumber = await ctx.reply('Телефон: ', inputText);
+        const phone = ctx.message.text;
+
+        // тут можешь добавить в БД или проверить формат и т.п.
+        await ctx.reply(`Спасибо! Мы записали ваш номер: ${phone}`);
+
+        userStates.delete(userId); // очистить состояние
         break;
     
       default:
