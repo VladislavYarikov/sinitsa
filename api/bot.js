@@ -1,5 +1,5 @@
 import { Telegraf } from 'telegraf';
-import { Markup } from 'telegraf/markup';
+import { Markup } from 'telegraf';
 import { InferenceClient } from "@huggingface/inference";
 import { connectDB } from './db.js';
 import { User } from '../models/User.js';
