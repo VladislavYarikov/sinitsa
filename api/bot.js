@@ -55,6 +55,11 @@ bot.on('message', async (ctx) => {
         const passwordRegexp = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/;
         let sendMessage = undefined;
 
+        userStates.set('registrationSessionTimeout', setTimeout(() => {
+          userStates.delete(ctx.from.id);
+          ctx.reply('Сессия создания аккаунта - закончена');
+        }, 10000))
+
         if (phoneRegexp.test(inputText) && !userData.has("number")) {
           //detection: if user laready had account with input number
           const user = await User.findOne({ phone: inputText });
@@ -130,6 +135,11 @@ bot.on('message', async (ctx) => {
     if (state == 'registrationProcess') return;
 
     userStates.set(ctx.from.id, 'registrationProcess');
+    userStates.set('registrationSessionTimeout', setTimeout(() => {
+      userStates.delete(ctx.from.id);
+      ctx.reply('Сессия создания аккаунта - закончена');
+    }, 10000))
+
     ctx.reply('Создание аккаунта...');
     ctx.reply('Пришлите свой номер телефона в формате: 89XXXXXXXXX');
   });
