@@ -56,6 +56,7 @@ bot.on('message', async (ctx) => {
         let sendMessage = undefined;
 
         if (phoneRegexp.test(inputText) && !userData.has("number")) {
+          //detection: if user laready had account with input number
           const user = await User.findOne({ phone: inputText });
           if (user) {
             userStates.delete(userId); 
@@ -74,6 +75,7 @@ bot.on('message', async (ctx) => {
               null,
               'Создайте пароль, который содержит:\n 1. Только латинские буквы, \n 2. Минимум 1 цифру \n 3. Минимум одну заглавную букву'
             );
+            return;
           }, 1000);
         }
 
@@ -94,6 +96,10 @@ bot.on('message', async (ctx) => {
             userStates.delete(userId); // очистить состояние
           }, 1000);
         }
+
+        ctx.reply('Завершить регистрацию?', Markup.inlineKeyboard([
+          [Markup.button.callback('Да', 'exitRegistration')]
+        ]));
 
         break;
     
@@ -128,6 +134,7 @@ bot.on('message', async (ctx) => {
     ctx.reply('Пришлите свой номер телефона в формате: 89XXXXXXXXX');
   });
   bot.action('loginAcc', ctx => ctx.reply('You chose option 2'));
+  bot.action('exitRegistration', ctx => userStates.delete(ctx.from.id));
 
   // Start the bot using long polling
   bot.launch().then(() => {
