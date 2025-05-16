@@ -7,10 +7,10 @@ import { start, menu } from './utils/telegram.js';
 import { profile } from './actions/profile.js';
 import { startQuiz } from './actions/quiz.js';
 import { endProcess } from './actions/end.js';
+import { BOT_TOKEN } from './config.js';
 import 'dotenv/config';
 
-const API_KEY_BOT = process.env.TELEGRAM_TOKEN;
-const bot = new Telegraf(API_KEY_BOT);
+const bot = new Telegraf(BOT_TOKEN);
 
 // Регистрация команд и действий
 bot.start(start);

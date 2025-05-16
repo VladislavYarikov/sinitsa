@@ -34,3 +34,5 @@ export const MESSAGE_TIMEOUT = 1500;
 
 export const PHONE_REGEXP = /^89\d{9}$/;
 export const PASSWORD_REGEXP = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/;
+
+export const BOT_TOKEN = process.env.STATE === 'DEV' ? process.env.TEST_BOT_TOKEN : process.env.BOT_TOKEN;
